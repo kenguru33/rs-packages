@@ -1,11 +1,13 @@
-import { NatsJetStreamClientProxy } from '@nestjs-plugins/nats-jetstream-transport';
+import { NatsJetStreamPubAck, NatsJetStreamClientProxy } from '@nestjs-plugins/nats-jetstream-transport';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
   constructor(private client: NatsJetStreamClientProxy) {}
   createOrder(): string {
-    this.client.emit('order.created', 'order created').subscribe();
+    this.client.emit<NatsJetStreamPubAck, string>('order.created', 'order created').subscribe((res) => {
+      console.log(res)
+    });
     return 'order created.';
   }
   updateOrder(): string {
@@ -13,7 +15,9 @@ export class AppService {
     return 'order updated';
   }
   deleteOrder(): string {
-    this.client.emit('order.deleted', 'order deleted').subscribe();
+    this.client.send<NatsJetStreamPubAck, string>('order.deleted', 'order deleted by send message').subscribe(res => {
+      console.log(res)
+    })
     return 'order deletes';
   }
 }
