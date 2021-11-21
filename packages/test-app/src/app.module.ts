@@ -6,7 +6,7 @@ import { NatsJetStreamTransport } from '@nestjs-plugins/nats-jetstream-transport
 @Module({
   imports: [
     NatsJetStreamTransport.register({
-      connectOptions: {
+      connectionOptions: {
         servers: 'localhost:4222'
       },
       streamConfig: {
