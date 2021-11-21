@@ -50,7 +50,7 @@ export interface ServerConsumerOptions {
   replayPolicy?:
     | "Instant"
     | "All"
-    | "ByStartSequenc"
+    | "ByStartSequence"
     | "ByStartTime"
     | "Original";
   maxDeliver?: number;
