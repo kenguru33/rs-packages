@@ -65,6 +65,7 @@ export class NatsJetStreamServer
       const handler = this.getHandlerByPattern(subject);
       try {
         const subscription = await js.subscribe(subject, opts);
+        this.logger.log(`Subscribed to ${subject}`);
         for await (const msg of subscription) {
           const data = this.sc.decode(msg.data);
           const context = new NatsJetStreamContext([msg]);
@@ -73,7 +74,6 @@ export class NatsJetStreamServer
           );
           this.send(stream, () => null);
         }
-        this.logger.log(`Subscribed to ${subject}`);
       } catch (err) {
         console.log(err.message, subject);
       }

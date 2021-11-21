@@ -18,7 +18,7 @@ import { NatsJetStreamClientOptions } from "./interfaces";
 export class NatsJetStreamClientProxy extends ClientProxy {
   private nc: NatsConnection;
   private js: JetStreamClient;
-  private jsm: JetStreamManager;
+  // private jsm: JetStreamManager;
   private sc: Codec<string>;
 
   constructor(
@@ -32,10 +32,9 @@ export class NatsJetStreamClientProxy extends ClientProxy {
 
   async connect(): Promise<JetStreamClient> {
     this.nc = await connect(this.options.connectOptions);
-    this.jsm = await this.nc.jetstreamManager();
-    await this.jsm.streams.add(this.options.streamConfig);
-    await this.jsm.streams.add({name: 'stream1', subjects: ['user:created']})
-
+    // this.jsm = await this.nc.jetstreamManager();
+    // await this.jsm.streams.add(this.options.streamConfig);
+    // await this.jsm.streams.add({name: 'stream1', subjects: ['user:created']})
     this.js = this.nc.jetstream();
     return this.js;
   }

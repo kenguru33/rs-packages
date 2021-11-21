@@ -5,15 +5,15 @@ import { NatsJetStreamTransport } from '@nestjs-plugins/nats-jetstream-transport
 
 @Module({
   imports: [
-    // NatsJetStreamTransport.register({
-    //   connectOptions: {
-    //     servers: 'localhost:4222'
-    //   },
-    //   streamConfig: {
-    //     name: 'Orders',
-    //     subjects: ['orders:created']
-    //   }
-    // })
+    NatsJetStreamTransport.register({
+      connectOptions: {
+        servers: 'localhost:4222'
+      },
+      streamConfig: {
+        name: 'Order',
+        subjects: ['order.*']
+      }
+    })
   ],
   controllers: [AppController],
   providers: [AppService],

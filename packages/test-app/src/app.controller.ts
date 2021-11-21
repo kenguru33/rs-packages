@@ -10,17 +10,17 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  // @Get()
-  // getHello(): string {
-  //   return this.appService.getHello();
-  // }
+  @Get()
+  getHello(): string {
+    return this.appService.getHello();
+  }
 
-  // @Get('/bye')
-  // getBye(): string {
-  //   return this.appService.getBye();
-  // }
+  @Get('/bye')
+  getBye(): string {
+    return this.appService.getBye();
+  }
 
-  @EventPattern('user.*')
+  @EventPattern('order.updated')
   public async stationCreatedHandler(
     @Payload() data: string,
     @Ctx() context: NatsJetStreamContext,
@@ -29,21 +29,12 @@ export class AppController {
     console.log('received: ' + context.message.subject, data);
   }
 
-  // @EventPattern('user.updated')
-  // public async stationCancelledHandler(
-  //   @Payload() data: { id: number; name: string },
-  //   @Ctx() context: NatsJetStreamContext,
-  // ) {
-  //   context.message.ack();
-  //   console.log('received: ', data);
-  // }
-
   @EventPattern('order.created')
   public async prderCreatedledHandler(
     @Payload() data: { id: number; name: string },
     @Ctx() context: NatsJetStreamContext,
   ) {
     context.message.ack();
-    console.log('received: ', data);
+    console.log('received: ' + context.message.subject, data);
   }
 }
