@@ -9,14 +9,13 @@ import {
 import { NatsJetStreamServerOptions } from "./interfaces";
 import { NatsJetStreamContext } from "./nats-jetstream.context";
 import { serverConsumerOptionsBuilder } from "./utils/server-consumer-options-builder";
-import { from, Observable } from "rxjs";
+import { from } from "rxjs";
 
 export class NatsJetStreamServer
   extends Server
   implements CustomTransportStrategy
 {
   private nc: NatsConnection;
-  private jsm: JetStreamManager;
   private sc: Codec<string>;
 
   constructor(private options: NatsJetStreamServerOptions) {
@@ -26,7 +25,6 @@ export class NatsJetStreamServer
 
   async listen(callback: () => null) {
     this.nc = await connect(this.options.connectionOptions);
-    this.jsm = await this.nc.jetstreamManager(this.options.jetStreamOptions);
     await this.bindEventHandlers();
     callback();
   }
