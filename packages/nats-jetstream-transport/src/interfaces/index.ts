@@ -12,7 +12,6 @@ export interface NatsJetStreamClientOptions {
   streamConfig: Partial<StreamConfig>;
   jetStreamOption?: JetStreamOptions;
   jetStreamPublishOptions?: JetStreamPublishOptions;
-  // TODO: Add jetstreamoptions? or is it JetStreamPublishOptions
 }
 
 export interface NatsJetStreamClientAsyncOptions
