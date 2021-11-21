@@ -1,5 +1,5 @@
 import { NatsJetStreamClientProxy } from '@nestjs-plugins/nats-jetstream-transport';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
