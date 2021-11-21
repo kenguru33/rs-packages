@@ -1,14 +1,5 @@
 import { ModuleMetadata } from "@nestjs/common";
-import {
-  ConnectionOptions,
-  consumerOpts,
-  ConsumerOpts,
-  ConsumerOptsBuilder,
-  JetStreamManager,
-  JetStreamOptions,
-  NatsConnection,
-  StreamConfig,
-} from "nats";
+import { ConnectionOptions, JetStreamOptions, StreamConfig } from "nats";
 
 export interface NatsJetStreamClientOptions {
   streamConfig: Partial<StreamConfig>;
@@ -25,16 +16,22 @@ export interface NatsJetStreamClientAsyncOptions
 }
 
 export interface NatsJetStreamServerOptions {
-  id: string,
-  connectionOptions: ConnectionOptions
-  consumerOptions: Partial<ServerConsumerOptions>
-  jetStreamOptions?: JetStreamOptions
+  id: string;
+  connectionOptions: ConnectionOptions;
+  consumerOptions: Partial<ServerConsumerOptions>;
+  jetStreamOptions?: JetStreamOptions;
 }
 
 export interface ServerConsumerOptions {
   // https://nats.io/blog/jetstream-java-client-03-consume/
   durable?: boolean;
-  deliverPolicy?: "All" | "Last" | "New" | "ByStartSequence" | "ByStartTime" | 'last_per_subject';
+  deliverPolicy?:
+    | "All"
+    | "Last"
+    | "New"
+    | "ByStartSequence"
+    | "ByStartTime"
+    | "last_per_subject";
   startSequence?: number;
   startAtTimeDelta?: number;
   startTime?: Date;
