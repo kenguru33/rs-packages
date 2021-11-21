@@ -18,7 +18,6 @@ import {
 } from "nats";
 import {
   NatsJetStreamServerOptions,
-  ServerConsumerOptions,
 } from "./interfaces";
 import { NatsJetStreamContext } from "./nats-jetstream.context";
 import { serverConsumerOptionsBuilder } from "./utils/server-consumer-options-builder";
@@ -31,20 +30,14 @@ export class NatsJetStreamServer
   private jsm: JetStreamManager;
   private sc: Codec<string>;
 
-  constructor(
-    private id: string,
-    private connectionOptions: ConnectionOptions,
-    private serverConsumerOptions: ServerConsumerOptions,
-    private jetStreamOptions: JetStreamOptions
-  ) {
+  constructor(private options: NatsJetStreamServerOptions) {
     super();
     this.sc = StringCodec();
-
   }
 
   async listen(callback: () => null) {
-    this.nc = await connect(this.connectionOptions);
-    this.jsm = await this.nc.jetstreamManager(this.jetStreamOptions);
+    this.nc = await connect(this.options.connectionOptions);
+    this.jsm = await this.nc.jetstreamManager(this.options.jetStreamOptions);
     this.bindEventHandlers();
     callback();
   }
@@ -53,12 +46,12 @@ export class NatsJetStreamServer
   }
 
   private createConsumerOptions(subject: string) {
-    const opts = serverConsumerOptionsBuilder(this.serverConsumerOptions)
-    if (this.serverConsumerOptions.durable) {
+    const opts = serverConsumerOptionsBuilder(this.options.consumerOptions);
+    if (this.options.consumerOptions.durable) {
       opts.durable(
-        `${this.id}-${subject.replace(".", "_").replace("*", "_ALL")}`
+        `${this.options.id}-${subject.replace(".", "_").replace("*", "_ALL")}`
       );
-    } 
+    }
     return opts;
   }
 

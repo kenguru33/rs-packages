@@ -25,7 +25,8 @@ export interface NatsJetStreamClientAsyncOptions
 }
 
 export interface NatsJetStreamServerOptions {
-  connectOptions: ConnectionOptions
+  id: string,
+  connectionOptions: ConnectionOptions
   consumerOptions: Partial<ServerConsumerOptions>
   jetStreamOptions?: JetStreamOptions
 }
