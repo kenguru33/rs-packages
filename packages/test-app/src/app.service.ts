@@ -3,15 +3,17 @@ import { Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  
   constructor(private client: NatsJetStreamClientProxy) {}
-  getHello(): string {
-    this.client.emit('order.created', 'hello world').subscribe();
-    return 'Hello World!';
+  createOrder(): string {
+    this.client.emit('order.created', 'order created').subscribe();
+    return 'order created.';
   }
-  getBye(): string {
-    this.client.emit('order.updated', 'bye bye world').subscribe();
-    return 'Bye Bye World!';
+  updateOrder(): string {
+    this.client.emit('order.updated', 'order updated').subscribe();
+    return 'order updated';
+  }
+  deleteOrder(): string {
+    this.client.emit('order.deleted', 'order deleted').subscribe();
+    return 'order deletes';
   }
 }
-

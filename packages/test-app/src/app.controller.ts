@@ -1,7 +1,4 @@
-import {
-  NatsJetStreamServer,
-  NatsJetStreamContext,
-} from '@nestjs-plugins/nats-jetstream-transport';
+import { NatsJetStreamContext } from '@nestjs-plugins/nats-jetstream-transport';
 import { Controller, Get } from '@nestjs/common';
 import { Ctx, EventPattern, Payload } from '@nestjs/microservices';
 import { AppService } from './app.service';
@@ -11,17 +8,22 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  createOrder(): string {
+    return this.appService.createOrder();
   }
 
-  @Get('/bye')
-  getBye(): string {
-    return this.appService.getBye();
+  @Get('/update')
+  updateOrder(): string {
+    return this.appService.updateOrder();
+  }
+
+  @Get('/delete')
+  deleteOrder(): string {
+    return this.appService.deleteOrder();
   }
 
   @EventPattern('order.updated')
-  public async stationCreatedHandler(
+  public async orderUpdatedHandler(
     @Payload() data: string,
     @Ctx() context: NatsJetStreamContext,
   ) {
@@ -30,7 +32,16 @@ export class AppController {
   }
 
   @EventPattern('order.created')
-  public async prderCreatedledHandler(
+  public async orderCreatedHandler(
+    @Payload() data: { id: number; name: string },
+    @Ctx() context: NatsJetStreamContext,
+  ) {
+    context.message.ack();
+    console.log('received: ' + context.message.subject, data);
+  }
+
+  @EventPattern('order.deleted')
+  public async orderDeletedHandler(
     @Payload() data: { id: number; name: string },
     @Ctx() context: NatsJetStreamContext,
   ) {
