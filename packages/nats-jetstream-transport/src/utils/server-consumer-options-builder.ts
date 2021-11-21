@@ -1,7 +1,9 @@
-import { consumerOpts, createInbox } from "nats";
+import { consumerOpts } from "nats";
 import { ServerConsumerOptions } from "src/interfaces";
 
-export function serverConsumerOptionsBuilder(serverConsumerOptions: ServerConsumerOptions) {
+export function serverConsumerOptionsBuilder(
+  serverConsumerOptions: ServerConsumerOptions
+) {
   const {
     deliverGroup,
     deliverToSubject,
@@ -25,41 +27,41 @@ export function serverConsumerOptionsBuilder(serverConsumerOptions: ServerConsum
     sample,
     startAtTimeDelta,
     startSequence,
-    startTime
-  } = serverConsumerOptions
-  
+    startTime,
+  } = serverConsumerOptions;
+
   const opts = consumerOpts();
-  
-  deliverGroup && opts.deliverGroup(deliverGroup) 
-  manualAck && opts.manualAck() 
-  ackPolicy==='All' && opts.ackAll()
-  ackPolicy==='Explicit'&& opts.ackExplicit()
-  ackPolicy==='None' && opts.ackNone()
-  deliverPolicy==='All' && opts.deliverAll() 
-  deliverPolicy==='Last' && opts.deliverLast()
-  deliverPolicy==='last_per_subject' && opts.deliverLastPerSubject();
-  deliverPolicy==='New' && opts.deliverNew()
-  deliverToSubject && opts.deliverTo(deliverToSubject)
-  deliverTo && opts.deliverTo(deliverTo)
-  
-  description && opts.description(description)
+
+  deliverGroup && opts.deliverGroup(deliverGroup);
+  manualAck && opts.manualAck();
+  ackPolicy === "All" && opts.ackAll();
+  ackPolicy === "Explicit" && opts.ackExplicit();
+  ackPolicy === "None" && opts.ackNone();
+  deliverPolicy === "All" && opts.deliverAll();
+  deliverPolicy === "Last" && opts.deliverLast();
+  deliverPolicy === "last_per_subject" && opts.deliverLastPerSubject();
+  deliverPolicy === "New" && opts.deliverNew();
+  deliverToSubject && opts.deliverTo(deliverToSubject);
+  deliverTo && opts.deliverTo(deliverTo);
+
+  description && opts.description(description);
   // durable && opts.durable('')
-  filterSubject && opts.filterSubject(filterSubject)
-  flowControl && opts.flowControl()
-  headersOnly && opts.headersOnly()
-  idleHeartBeat && opts.idleHeartbeat(idleHeartBeat)
-  limit && opts.limit(limit); 
-  maxAckPending && opts.maxAckPending(maxAckPending) 
-  maxDeliver && opts.maxDeliver(maxDeliver) 
-  maxMessages && opts.maxMessages(maxMessages) 
-  maxWaiting && opts.maxWaiting(maxWaiting)
-  ordreredConsumer && opts.orderedConsumer() 
-  replayPolicy==='Instant' && opts.replayInstantly()
-  replayPolicy==='Original' && opts.replayOriginal()
-  sample && opts.sample(sample)
-  startAtTimeDelta && opts.startAtTimeDelta(startAtTimeDelta) 
-  startSequence && opts.startSequence(startSequence) 
-  startTime && opts.startTime(startTime) 
-  
-  return opts
+  filterSubject && opts.filterSubject(filterSubject);
+  flowControl && opts.flowControl();
+  headersOnly && opts.headersOnly();
+  idleHeartBeat && opts.idleHeartbeat(idleHeartBeat);
+  limit && opts.limit(limit);
+  maxAckPending && opts.maxAckPending(maxAckPending);
+  maxDeliver && opts.maxDeliver(maxDeliver);
+  maxMessages && opts.maxMessages(maxMessages);
+  maxWaiting && opts.maxWaiting(maxWaiting);
+  ordreredConsumer && opts.orderedConsumer();
+  replayPolicy === "Instant" && opts.replayInstantly();
+  replayPolicy === "Original" && opts.replayOriginal();
+  sample && opts.sample(sample);
+  startAtTimeDelta && opts.startAtTimeDelta(startAtTimeDelta);
+  startSequence && opts.startSequence(startSequence);
+  startTime && opts.startTime(startTime);
+
+  return opts;
 }

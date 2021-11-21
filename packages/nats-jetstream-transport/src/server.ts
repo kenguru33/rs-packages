@@ -1,24 +1,12 @@
-import {
-  CustomTransportStrategy,
-  Server,
-  Transport,
-} from "@nestjs/microservices";
+import { CustomTransportStrategy, Server } from "@nestjs/microservices";
 import {
   Codec,
   connect,
-  ConnectionOptions,
-  consumerOpts,
-  ConsumerOpts,
-  createInbox,
-  JetStreamClient,
   JetStreamManager,
-  JetStreamOptions,
   NatsConnection,
   StringCodec,
 } from "nats";
-import {
-  NatsJetStreamServerOptions,
-} from "./interfaces";
+import { NatsJetStreamServerOptions } from "./interfaces";
 import { NatsJetStreamContext } from "./nats-jetstream.context";
 import { serverConsumerOptionsBuilder } from "./utils/server-consumer-options-builder";
 
@@ -41,6 +29,7 @@ export class NatsJetStreamServer
     this.bindEventHandlers();
     callback();
   }
+
   close() {
     this.nc.close();
   }

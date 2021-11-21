@@ -2,20 +2,21 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { CustomStrategy } from '@nestjs/microservices';
 import { NatsJetStreamServer } from '@nestjs-plugins/nats-jetstream-transport';
+
 async function bootstrap() {
   const options: CustomStrategy = {
     strategy: new NatsJetStreamServer({
       id: 'test-service',
       connectionOptions: {
-        servers: 'localhost:4222'
+        servers: 'localhost:4222',
       },
-      consumerOptions:{
+      consumerOptions: {
         deliverGroup: 'test-service',
         durable: true,
         deliverTo: 'myservice',
-        manualAck: true
-      }
-    })
+        manualAck: true,
+      },
+    }),
   };
 
   // hybrid microservice and web application

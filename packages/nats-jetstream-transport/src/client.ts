@@ -1,25 +1,13 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { ClientProxy, ReadPacket, WritePacket } from "@nestjs/microservices";
-import {
-  
-  Codec,
-  connect,
-  ConnectionOptions,
-  JetStreamClient,
-  JetStreamManager,
-  JetStreamOptions,
-  NatsConnection,
-  PublishOptions,
-  StringCodec,
-} from "nats";
-import { NATS_JETSTREAM_OPTIONS } from "./constants";
-import { NatsJetStreamClientOptions } from "./interfaces";
+import {Inject, Injectable} from "@nestjs/common";
+import {ClientProxy, ReadPacket, WritePacket} from "@nestjs/microservices";
+import {Codec, connect, JetStreamClient, NatsConnection, StringCodec,} from "nats";
+import {NATS_JETSTREAM_OPTIONS} from "./constants";
+import {NatsJetStreamClientOptions} from "./interfaces";
 
 @Injectable()
 export class NatsJetStreamClientProxy extends ClientProxy {
   private nc: NatsConnection;
   private js: JetStreamClient;
-  // private jsm: JetStreamManager;
   private sc: Codec<string>;
 
   constructor(
@@ -34,9 +22,6 @@ export class NatsJetStreamClientProxy extends ClientProxy {
   async connect(): Promise<JetStreamClient> {
     
     this.nc = await connect(this.options.connectOptions);
-    // this.jsm = await this.nc.jetstreamManager();
-    // await this.jsm.streams.add(this.options.streamConfig);
-    // await this.jsm.streams.add({name: 'stream1', subjects: ['user:created']})
     this.js = this.nc.jetstream();
     return this.js;
   }
