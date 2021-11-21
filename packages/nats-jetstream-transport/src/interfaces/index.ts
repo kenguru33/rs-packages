@@ -1,5 +1,5 @@
 import { ModuleMetadata } from "@nestjs/common";
-import { ConnectionOptions, JetStreamOptions, StreamConfig } from "nats";
+import { ConnectionOptions, JetStreamOptions, PubAck, StreamConfig } from "nats";
 
 export interface NatsJetStreamClientOptions {
   streamConfig: Partial<StreamConfig>;
@@ -64,3 +64,5 @@ export interface ServerConsumerOptions {
   ordreredConsumer?: boolean;
   maxWaiting?: number;
 }
+
+export interface NatsJetStreamPubAck extends PubAck {}
