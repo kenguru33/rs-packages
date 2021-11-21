@@ -55,21 +55,17 @@ export interface ServerConsumerOptions {
     | "Original";
   maxDeliver?: number;
   filterSubject?: string;
-  sampleFrequency?: string;
+  sample?: number;
   idleHeartbeat?: number;
   flowControl?: boolean;
-  maxwaiting?: number;
+  maxWaiting?: number;
   maxMessages?: number;
   manualAck?: boolean;
   limit?: number;
   description?: string;
-  sample?: number;
   orderedConsumer?: boolean;
   deliverGroup?: string;
   headersOnly?: boolean;
-  idleHeartBeat?: number;
-  ordreredConsumer?: boolean;
-  maxWaiting?: number;
 }
 
 export interface NatsJetStreamPubAck extends PubAck {}

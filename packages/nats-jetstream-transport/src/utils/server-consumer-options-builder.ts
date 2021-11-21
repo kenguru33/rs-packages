@@ -16,13 +16,13 @@ export function serverConsumerOptionsBuilder(
     filterSubject,
     flowControl,
     headersOnly,
-    idleHeartBeat,
+    idleHeartbeat,
     limit,
     maxAckPending,
     maxDeliver,
     maxMessages,
     maxWaiting,
-    ordreredConsumer,
+    orderedConsumer,
     replayPolicy,
     sample,
     startAtTimeDelta,
@@ -49,13 +49,13 @@ export function serverConsumerOptionsBuilder(
   filterSubject && opts.filterSubject(filterSubject);
   flowControl && opts.flowControl();
   headersOnly && opts.headersOnly();
-  idleHeartBeat && opts.idleHeartbeat(idleHeartBeat);
+  idleHeartbeat && opts.idleHeartbeat(idleHeartbeat);
   limit && opts.limit(limit);
   maxAckPending && opts.maxAckPending(maxAckPending);
   maxDeliver && opts.maxDeliver(maxDeliver);
   maxMessages && opts.maxMessages(maxMessages);
   maxWaiting && opts.maxWaiting(maxWaiting);
-  ordreredConsumer && opts.orderedConsumer();
+  orderedConsumer && opts.orderedConsumer();
   replayPolicy === "Instant" && opts.replayInstantly();
   replayPolicy === "Original" && opts.replayOriginal();
   sample && opts.sample(sample);
