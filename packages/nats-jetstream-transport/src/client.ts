@@ -51,7 +51,6 @@ export class NatsJetStreamClientProxy extends ClientProxy {
   protected async dispatchEvent<T = any>(
     packet: ReadPacket<any>
   ): Promise<any> {
-    // TODO add JetStreamPublishOptions
     return this.js.publish(packet.pattern, this.sc.encode(packet.data), this.options.jetStreamPublishOptions);
   }
 }
