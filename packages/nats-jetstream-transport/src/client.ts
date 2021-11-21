@@ -1,6 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ClientProxy, ReadPacket, WritePacket } from "@nestjs/microservices";
 import {
+  
   Codec,
   connect,
   ConnectionOptions,
@@ -31,6 +32,7 @@ export class NatsJetStreamClientProxy extends ClientProxy {
   }
 
   async connect(): Promise<JetStreamClient> {
+    
     this.nc = await connect(this.options.connectOptions);
     // this.jsm = await this.nc.jetstreamManager();
     // await this.jsm.streams.add(this.options.streamConfig);

@@ -10,7 +10,6 @@ import { NatsJetStreamTransport } from '@nestjs-plugins/nats-jetstream-transport
         servers: 'localhost:4222'
       },
       streamConfig: {
-        name: 'Order',
         subjects: ['order.*']
       }
     })

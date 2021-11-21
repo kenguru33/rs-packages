@@ -16,7 +16,10 @@ import {
   NatsConnection,
   StringCodec,
 } from "nats";
-import { NatsJetStreamServerOptions } from "./interfaces";
+import {
+  NatsJetStreamServerOptions,
+  ServerConsumerOptions,
+} from "./interfaces";
 import { NatsJetStreamContext } from "./nats-jetstream.context";
 import { serverConsumerOptionsBuilder } from "./utils/server-consumer-options-builder";
 
@@ -28,14 +31,20 @@ export class NatsJetStreamServer
   private jsm: JetStreamManager;
   private sc: Codec<string>;
 
-  constructor(private transportID: string, private options: NatsJetStreamServerOptions) {
+  constructor(
+    private id: string,
+    private connectionOptions: ConnectionOptions,
+    private serverConsumerOptions: ServerConsumerOptions,
+    private jetStreamOptions: JetStreamOptions
+  ) {
     super();
     this.sc = StringCodec();
+
   }
 
   async listen(callback: () => null) {
-    this.nc = await connect(this.options.connectOptions);
-    this.jsm = await this.nc.jetstreamManager(this.options.jetStreamOptions);
+    this.nc = await connect(this.connectionOptions);
+    this.jsm = await this.nc.jetstreamManager(this.jetStreamOptions);
     this.bindEventHandlers();
     callback();
   }
@@ -44,12 +53,13 @@ export class NatsJetStreamServer
   }
 
   private createConsumerOptions(subject: string) {
-    const opts = consumerOpts();
-    opts.durable(`${this.transportID}-${subject.replace('.','_').replace('*', '_ALL')}`);
-    opts.manualAck();
-    opts.deliverGroup("myservice");
-    opts.deliverTo(createInbox());
-    return opts
+    const opts = serverConsumerOptionsBuilder(this.serverConsumerOptions)
+    if (this.serverConsumerOptions.durable) {
+      opts.durable(
+        `${this.id}-${subject.replace(".", "_").replace("*", "_ALL")}`
+      );
+    } 
+    return opts;
   }
 
   private async bindEventHandlers() {
@@ -61,7 +71,7 @@ export class NatsJetStreamServer
 
     subjects.forEach(async (subject) => {
       const js = this.nc.jetstream();
-      const opts = this.createConsumerOptions(subject);   
+      const opts = this.createConsumerOptions(subject);
       const handler = this.getHandlerByPattern(subject);
       try {
         const subscription = await js.subscribe(subject, opts);

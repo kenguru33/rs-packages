@@ -5,12 +5,12 @@ export function serverConsumerOptionsBuilder(serverConsumerOptions: ServerConsum
   const {
     deliverGroup,
     deliverToSubject,
-    deliverToInbox,
+    deliverTo,
     manualAck,
     ackPolicy,
     deliverPolicy,
     description,
-    durable,
+    // durable,
     filterSubject,
     flowControl,
     headersOnly,
@@ -40,10 +40,10 @@ export function serverConsumerOptionsBuilder(serverConsumerOptions: ServerConsum
   deliverPolicy==='last_per_subject' && opts.deliverLastPerSubject();
   deliverPolicy==='New' && opts.deliverNew()
   deliverToSubject && opts.deliverTo(deliverToSubject)
-  deliverToInbox && opts.deliverTo(createInbox(deliverToInbox))
+  deliverTo && opts.deliverTo(deliverTo)
   
   description && opts.description(description)
-  durable && opts.durable(durable)
+  // durable && opts.durable('')
   filterSubject && opts.filterSubject(filterSubject)
   flowControl && opts.flowControl()
   headersOnly && opts.headersOnly()
