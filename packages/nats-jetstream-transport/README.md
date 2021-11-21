@@ -1,7 +1,5 @@
 # Nats JetStream Transport Module for NestJS
 
----
-
 Build Event Driven Microservices Architecture with Nats JetSteam Server and NestJS.
 
 
@@ -26,16 +24,12 @@ Build Event Driven Microservices Architecture with Nats JetSteam Server and Nest
 
 ## Install
 
----
-
 ```bash
 npm i @nestjs/microservices
 npm i @nestjs-plugins/nestjs-nats-jetstream-transport
 ```
 
 ## Runnin Nats Jetstream server in Docker
-
----
 
 ```bash
 docker run -d --name nats-main -p 4222:4222 -p 6222:6222 -p 8222:8222 nats -js -m 8222
@@ -44,8 +38,6 @@ docker run -d --name nats-main -p 4222:4222 -p 6222:6222 -p 8222:8222 nats -js -
 
 
 ### NatsJetStreamServerOptions
-
----
 
 - **ConnectionOptions** - Server connection options.
 
@@ -56,8 +48,6 @@ docker run -d --name nats-main -p 4222:4222 -p 6222:6222 -p 8222:8222 nats -js -
 
 
 ### NatsJetStreamClientOptions
-
----
 
 - **ConnectionOptions** - Server connection options
 
@@ -71,7 +61,7 @@ docker run -d --name nats-main -p 4222:4222 -p 6222:6222 -p 8222:8222 nats -js -
 
 ### ServerConsumerOptions
 
----
+
 
 - **durable** (boolean, default: false) - Durable subscriptions remember their position even if the client is disconnected.
 
