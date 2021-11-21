@@ -2,7 +2,6 @@ import { CustomTransportStrategy, Server } from "@nestjs/microservices";
 import {
   Codec,
   connect,
-  JetStreamManager,
   NatsConnection,
   StringCodec,
 } from "nats";
