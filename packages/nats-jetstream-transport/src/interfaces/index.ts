@@ -1,9 +1,15 @@
 import { ModuleMetadata } from "@nestjs/common";
-import { ConnectionOptions, JetStreamOptions, PubAck, StreamConfig, JetStreamPublishOptions } from "nats";
+import {
+  ConnectionOptions,
+  JetStreamOptions,
+  PubAck,
+  StreamConfig,
+  JetStreamPublishOptions,
+} from "nats";
 
 export interface NatsJetStreamClientOptions {
-  streamConfig: Partial<StreamConfig>;
   connectionOptions: ConnectionOptions;
+  streamConfig: Partial<StreamConfig>;
   jetStreamOption?: JetStreamOptions;
   jetStreamPublishOptions?: JetStreamPublishOptions;
   // TODO: Add jetstreamoptions? or is it JetStreamPublishOptions
