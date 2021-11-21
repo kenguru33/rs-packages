@@ -1,18 +1,33 @@
 {
-  "name": "@nestjs-plugins/nats-jetstream-transport",
+  "name": "@nestjs-plugins/nestjs-nats-jetstream-transport",
   "version": "1.0.0",
-  "description": "",
+  "description": "Nats JetStream Transport for NestJS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Redningsselskapet/nestjs-nats-jetstream-transport"
+  },
+  "keywords": [
+    "nestjs",
+    "transport",
+    "microservices",
+    "nats",
+    "streaming",
+    "jetstream",
+    "pubsub",
+    "event",
+    "messaging"
   ],
   "scripts": {
     "test": "echo \"no test specified\"",
     "build": "rimraf dist && tsc",
     "watch": "tsc -w"
   },
-  "author": "",
+  "author": "Bernt Anker [bernt.anker@gmail.com]",
   "license": "ISC",
   "dependencies": {
     "nats": "^2.4.0",
