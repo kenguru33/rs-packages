@@ -26,12 +26,12 @@ export class NatsJetStreamServer
   async listen(callback: () => null) {
     this.nc = await connect(this.options.connectionOptions);
     this.jsm = await this.nc.jetstreamManager(this.options.jetStreamOptions);
-    this.bindEventHandlers();
+    await this.bindEventHandlers();
     callback();
   }
 
-  close() {
-    this.nc.close();
+  async close() {
+    await this.nc.close();
   }
 
   private createConsumerOptions(subject: string) {
