@@ -420,7 +420,6 @@ export class AppController {
 ```typescript
 // main.js
 
-
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { CustomStrategy } from '@nestjs/microservices';
