@@ -11,7 +11,7 @@ async function bootstrap() {
       consumerOptions: {
         deliverGroup: 'test-service',
         durable: true,
-        deliverTo: 'myservice',
+        deliverTo: 'myservice-inbox',
         manualAck: true,
       },
     }),

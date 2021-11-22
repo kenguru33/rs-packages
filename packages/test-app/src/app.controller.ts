@@ -8,6 +8,11 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
+  home(): string {
+    return 'Welcome to webshop'
+  }
+
+  @Get('/create')
   createOrder(): string {
     return this.appService.createOrder();
   }
