@@ -109,7 +109,32 @@ docker run -d --name nats-main -p 4222:4222 -p 6222:6222 -p 8222:8222 nats -js -
 
 - **headersOnly**: boolean - configures the consumer to only deliver existing header and the `Nats-Msg-Size` header, no bodies
 
-- 
-  
+
+
+### ConnectionOptions
+
+- servers: 'localhost:4222',  
+  debug: true,  
+  name: 'service',  
+  ignoreClusterUpdates: true,  
+  inboxPrefix: 'mybox',  
+  maxPingOut: 1000,  
+  tls: null,  
+  noEcho: true,  
+  maxReconnectAttempts: 3,  
+  pass: 'jkj',  
+  noRandomize: true,  
+  pedantic: true,  
+  pingInterval: 1000,  
+  port: 4222,  
+  reconnect: true,  
+  reconnectJitter: 1000,  
+  reconnectJitterTLS: 1,  
+  reconnectTimeWait: 500,  
+  timeout: 10000,  
+  token: 'jkjkjk',  
+  user: 'user',  
+  verbose: true,  
+  waitOnFirstConnect: true,
 
 
