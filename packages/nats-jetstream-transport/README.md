@@ -29,11 +29,33 @@ npm i @nestjs/microservices
 npm i @nestjs-plugins/nestjs-nats-jetstream-transport
 ```
 
-## Runnin Nats Jetstream server in Docker
+## Running Nats Jetstream server in Docker
 
 ```bash
 docker run -d --name nats-main -p 4222:4222 -p 6222:6222 -p 8222:8222 nats -js -m 8222
 ```
+
+## Manage nats from command line
+
+Install cli tool
+
+```bash
+brew install nats-io/nats-tools/nats
+```
+
+Add stream
+
+```bash
+nats stream add mystream # add subject order.*  
+```
+
+Just press enter and use default for the rest of the choices. 
+
+
+
+You are now ready to publish and consume events on the stream. See the [code example](#Code-example) below for a test drive.
+
+
 
 ## Configuration objects
 
@@ -245,6 +267,187 @@ docker run -d --name nats-main -p 4222:4222 -p 6222:6222 -p 8222:8222 nats -js -
 
 ## Code example
 
+```typescript
+// app.module.ts
 
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { NatsJetStreamTransport } from '@nestjs-plugins/nats-jetstream-transport';
+
+@Module({
+  imports: [
+    NatsJetStreamTransport.register({
+      connectionOptions: {
+        servers: 'localhost:4222',
+      },
+      streamConfig: {
+        subjects: ['order.*'],
+      },
+    }),
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
+
+```
+
+```typescript
+// app.service.ts
+
+import {
+  NatsJetStreamPubAck,
+  NatsJetStreamClientProxy,
+} from '@nestjs-plugins/nats-jetstream-transport';
+import { Injectable } from '@nestjs/common';
+
+interface OrderCreatedEvent {
+  id: number;
+  product: string;
+  quantity: number;
+}
+interface OrderUpdatedEvent {
+  id: number;
+  quantity: number;
+}
+interface OrderDeleteEvent {
+  id: number;
+}
+
+const ORDER_CREATED = 'order.created';
+const ORDER_UPDATED = 'order.updated';
+const ORDER_DELETED = 'order.deleted';
+
+@Injectable()
+export class AppService {
+  constructor(private client: NatsJetStreamClientProxy) {}
+
+  createOrder(): string {
+    this.client
+      .emit<NatsJetStreamPubAck, OrderCreatedEvent>(ORDER_CREATED, {
+        id: 1,
+        product: 'Socks',
+        quantity: 1,
+      })
+      .subscribe((pubAck) => {
+        console.log(pubAck);
+      });
+    return 'order created.';
+  }
+
+  updateOrder(): string {
+    this.client
+      .emit<null, OrderUpdatedEvent>(ORDER_UPDATED, { id: 1, quantity: 10 })
+      .subscribe();
+    return 'order updated';
+  }
+
+  deleteOrder(): string {
+    this.client
+      .send<NatsJetStreamPubAck, OrderDeleteEvent>(ORDER_DELETED, { id: 1 })
+      .subscribe((pubAck) => {
+        console.log(pubAck.seq);
+      });
+    return 'order deleted';
+  }
+}
+
+```
+
+```typescript
+// app.controller.ts
+
+import { NatsJetStreamContext } from '@nestjs-plugins/nats-jetstream-transport';
+import { Controller, Get } from '@nestjs/common';
+import { Ctx, EventPattern, Payload } from '@nestjs/microservices';
+import { AppService } from './app.service';
+
+@Controller()
+export class AppController {
+  constructor(private readonly appService: AppService) {}
+
+  @Get()
+  home(): string {
+    return 'Welcome to webshop'
+  }
+
+  @Get('/create')
+  createOrder(): string {
+    return this.appService.createOrder();
+  }
+
+  @Get('/update')
+  updateOrder(): string {
+    return this.appService.updateOrder();
+  }
+
+  @Get('/delete')
+  deleteOrder(): string {
+    return this.appService.deleteOrder();
+  }
+
+  @EventPattern('order.updated')
+  public async orderUpdatedHandler(
+    @Payload() data: string,
+    @Ctx() context: NatsJetStreamContext,
+  ) {
+    context.message.ack();
+    console.log('received: ' + context.message.subject, data);
+  }
+
+  @EventPattern('order.created')
+  public async orderCreatedHandler(
+    @Payload() data: { id: number; name: string },
+    @Ctx() context: NatsJetStreamContext,
+  ) {
+    context.message.ack();
+    console.log('received: ' + context.message.subject, data);
+  }
+
+  @EventPattern('order.deleted')
+  public async orderDeletedHandler(
+    @Payload() data:any,
+    @Ctx() context: NatsJetStreamContext,
+  ) {
+    context.message.ack();
+    console.log('received: ' + context.message.subject, data);
+  }
+}
+
+```
+
+```typescript
+// main.js
+
+
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { CustomStrategy } from '@nestjs/microservices';
+import { NatsJetStreamServer } from '@nestjs-plugins/nats-jetstream-transport';
+
+async function bootstrap() {
+  const options: CustomStrategy = {
+    strategy: new NatsJetStreamServer({
+      id: 'test-service',
+      connectionOptions: {},
+      consumerOptions: {
+        deliverGroup: 'test-service',
+        durable: true,
+        deliverTo: 'myservice-inbox',
+        manualAck: true,
+      },
+    }),
+  };
+
+  // hybrid microservice and web application
+  const app = await NestFactory.create(AppModule);
+  const microService = app.connectMicroservice(options);
+  microService.listen();
+  app.listen(3000);
+}
+bootstrap();
+
+```
 
 
