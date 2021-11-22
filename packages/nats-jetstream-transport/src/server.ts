@@ -56,7 +56,7 @@ export class NatsJetStreamServer
       const subscription = await js.subscribe(subject, opts);
       this.logger.log(`Subscribed to ${subject}`);
       for await (const msg of subscription) {
-        const data = this.sc.decode(msg.data);
+        const data = JSON.parse(this.sc.decode(msg.data));
         const context = new NatsJetStreamContext([msg]);
         this.send(from(handler(data, context)), () => null);
       }

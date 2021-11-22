@@ -22,8 +22,8 @@ export class NatsJetStreamClientProxy extends ClientProxy {
   ) {
     super();
     this.sc = StringCodec();
-    options.connectionOptions.waitOnFirstConnect = true;
-    this.connect();
+    // options.connectionOptions.waitOnFirstConnect = true;
+    // this.connect();
   }
 
   async connect(): Promise<JetStreamClient> {
@@ -40,7 +40,11 @@ export class NatsJetStreamClientProxy extends ClientProxy {
     callback: (packet: WritePacket<any>) => void
   ): () => void {
     this.js
-      .publish(packet.pattern, this.sc.encode(packet.data), this.options.jetStreamPublishOptions)
+      .publish(
+        packet.pattern,
+        this.sc.encode(JSON.stringify(packet.data)),
+        this.options.jetStreamPublishOptions
+      )
       .then((pubAck: PubAck) => {
         callback({ response: pubAck });
       })
@@ -48,9 +52,11 @@ export class NatsJetStreamClientProxy extends ClientProxy {
     return () => {};
   }
 
-  protected async dispatchEvent<T = any>(
-    packet: ReadPacket<any>
-  ): Promise<any> {
-    return this.js.publish(packet.pattern, this.sc.encode(packet.data), this.options.jetStreamPublishOptions);
+  protected async dispatchEvent<T = any>(packet: ReadPacket<T>): Promise<any> {
+    return this.js.publish(
+      packet.pattern,
+      this.sc.encode(JSON.stringify(packet.data)),
+      this.options.jetStreamPublishOptions
+    );
   }
 }
