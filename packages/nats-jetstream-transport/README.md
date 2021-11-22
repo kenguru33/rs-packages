@@ -169,7 +169,7 @@ docker run -d --name nats-main -p 4222:4222 -p 6222:6222 -p 8222:8222 nats -js -
 
 ### streamConfig
 
-- **subjects**: string []
+- **subjects**: string [] - Which NATS subjects to populate this stream with. Supports wildcards. Defaults to just the configured stream `name`.
 
 - **allow_rollup_hdrs**: boolean
 
@@ -179,41 +179,41 @@ docker run -d --name nats-main -p 4222:4222 -p 6222:6222 -p 8222:8222 nats -js -
 
 - **description**: string
 
-- **discard**: ?
+- **discard**: DiscardPolicy - When a Stream has reached its configured `max_bytes` or `max_msgs`, this policy kicks in. `DiscardPolicy::New` refuses new messages or `DiscardPolicy::Old` (default) deletes old messages to make space.
 
-- **duplicate_window**: number
+- **duplicate_window**: number - The window within which to track duplicate messages.
 
-- **max_age**: number
+- **max_age**: number - Maximum age of any message in the stream, expressed in microseconds.
 
-- **max_bytes**: number
+- **max_bytes**: number - How large the Stream may become in total bytes before the configured discard policy kicks in.
 
-- **max_consumers**: number
+- **max_consumers**: number - How many Consumers can be defined for a given Stream, -1 for unlimited.
 
-- **max_msg_size**: number
+- **max_msg_size**: number - The largest message that will be accepted by the Stream.
 
-- **max_msgs**: number
+- **max_msgs**: number - How large the Stream may become in total messages before the configured discard policy kicks in.
 
 - **max_msgs_per_subject**: number
 
 - **mirror**: ?
 
-- **name**: string
+- **name**: string - A name for the Stream. Must not have spaces, tabs or period `.` characters.
 
-- **no_ack**: boolean
+- **no_ack**: boolean - Setting this to true sisables acknowledging messages that are received by the Stream.
 
-- **num_replicas**: number
+- **num_replicas**: number - How many replicas to keep for each message in a clustered JetStream, maximum 5.
 
 - **placement**: ?
 
-- **retention**: ?
+- **retention**: RetentionPolicy - How message retention is considered, `Limits` (default), `Interest` or `WorkQueue`.
 
 - **sealed**: boolean
 
 - **sources**: ?
 
-- **storage**: 'file' | 'memory'
+- **storage**: 'file' | 'memory' - The type of storage backend, `File` (default) and `Memory`.
 
-- **template_owner**: string
+- **template_owner**: string - The owner of the template associated with this stream.
 
 
 
