@@ -39,23 +39,25 @@ docker run -d --name nats-main -p 4222:4222 -p 6222:6222 -p 8222:8222 nats -js -
 
 ### NatsJetStreamServerOptions
 
-- **ConnectionOptions** - Server connection options.
+- **id**: string
 
-- **ServerConsumerOptions** - Consumer options.
+- **connectionOptions**: ConnectionOptions 
 
-- **JetStreamOptions** - JetStream options.
+- **serverConsumerOptions**: ServerConsumerOptions 
+
+- **jetStreamOptions**: JetStreamOption
 
 
 
 ### NatsJetStreamClientOptions
 
-- **ConnectionOptions** - Server connection options
+- **connectionOptions**: ConnectionOptions
 
-- **StreamConfig** - Stream configuration
+- **streamConfig**: StreamConfig
 
-- **JetStreamOptions**  - JetStream options
+- **jetStreamOptions**: JetStreamOptions
 
-- **JetStreamPublishOptions** - Publish options
+- **jetStreamPublishOptions**: JetStreamPublishOptions
 
 
 
@@ -107,34 +109,134 @@ docker run -d --name nats-main -p 4222:4222 -p 6222:6222 -p 8222:8222 nats -js -
 
 - **deliverGroup**: string - when set will only deliver messages to subscriptions matching that group.
 
-- **headersOnly**: boolean - configures the consumer to only deliver existing header and the `Nats-Msg-Size` header, no bodies
+- **headersOnly**: boolean - configures the consumer to only deliver existing header and the `Nats-Msg-Size` header, no bodies.
 
 
 
 ### ConnectionOptions
 
-- servers: 'localhost:4222',  
-  debug: true,  
-  name: 'service',  
-  ignoreClusterUpdates: true,  
-  inboxPrefix: 'mybox',  
-  maxPingOut: 1000,  
-  tls: null,  
-  noEcho: true,  
-  maxReconnectAttempts: 3,  
-  pass: 'jkj',  
-  noRandomize: true,  
-  pedantic: true,  
-  pingInterval: 1000,  
-  port: 4222,  
-  reconnect: true,  
-  reconnectJitter: 1000,  
-  reconnectJitterTLS: 1,  
-  reconnectTimeWait: 500,  
-  timeout: 10000,  
-  token: 'jkjkjk',  
-  user: 'user',  
-  verbose: true,  
-  waitOnFirstConnect: true,
+- **servers**: string | string[] (default: 'localhost:4222') - String or Array of hostport for servers.
+
+- **debug**: boolean (default: false) - If `true`, the client prints protocol interactions to the console. Useful for debugging.
+
+- **name**: string - Connections can be assigned a name which will appear in some of the server monitoring data. This name is not required, but is **highly recommended** as a friendly connection name will help in monitoring, error reporting, debugging, and testing.
+
+- **ignoreClusterUpdates**: boolean - If `true` the client will ignore any cluster updates provided by the server.
+
+- **inboxPrefix**: string - Sets de prefix for automatically created inboxes - `createInbox(prefix)`
+
+- **maxPingOut**: number (default: 2) - Max number of pings the client will allow unanswered before raising a stale connection error.
+
+- **tls**: TlsOption - A configuration object for requiring a TLS connection.
+
+- **noEcho**: boolean (default: false) - The NoEcho option can be useful in BUS patterns where all applications subscribe and publish to the same subject.
+
+- **maxReconnectAttempts**: number (default: 10) - Maximum reconnect attempts per server.
+
+- **pass**: string - Sets the password for a connection.
+
+- **noRandomize**: boolean (default: false) - In order to prevent [*thundering herd*](/developing-with-nats/reconnect/random), most NATS client libraries randomize the servers they attempt to connect to. To disable the randomization process for connect and reconnect, set this to true.
+
+- **pedantic**: boolean (default: false) - mode that performs extra checks on the protocol.
+
+- **pingInterval**: number (default: 5) - Number of milliseconds between client-sent pings.
+
+- **port**: number (default: 4222) - Port number nats server listens on.
+
+- **reconnect**: boolean (default: true) - If false, client will not attempt reconnecting.
+
+- **reconnectJitter**: number - control how long before the NATS client attempts to reconnect to a server it has previously connected.
+
+- **reconnectJitterTLS**: number - control how long before the NATS client attempts to reconnect to a server it has previously connected.
+
+- **reconnectTimeWait**: number - prevents wasting client resources and alleviates a [*thundering herd*](/developing-with-nats/reconnect/random) situation when additional servers are not available.
+
+- reconnectDelayHandler: Generated function - A function that returns the number of millis to wait before the next connection to a server it connected to `()=>number`.
+
+- **timeout**: number (default: 20000) - Number of milliseconds the client will wait for a connection to be established. If it fails it will emit a `connection_timeout` event with a NatsError that provides the hostport of the server where the connection was attempted.
+
+- **token**: string - Sets a authorization token for a connection.
+
+- authenticator: Authenticator (default:  none) - Specifies the authenticator function that sets the client credentials.
+
+- **user**: string - Sets the username for a connection.
+
+- **verbose**: boolean (default: false) - Turns on `+OK` protocol acknowledgements.
+
+- **waitOnFirstConnect**: boolean (default: false) - If `true` the client will fall back to a reconnect mode if it fails its first connection attempt.
+
+
+
+### streamConfig
+
+- **subjects**: string []
+
+- **allow_rollup_hdrs**: boolean
+
+- **deny_delete**: boolean
+
+- **deny_purge**: boolean
+
+- **description**: string
+
+- **discard**: ?
+
+- **duplicate_window**: number
+
+- **max_age**: number
+
+- **max_bytes**: number
+
+- **max_consumers**: number
+
+- **max_msg_size**: number
+
+- **max_msgs**: number
+
+- **max_msgs_per_subject**: number
+
+- **mirror**: ?
+
+- **name**: string
+
+- **no_ack**: boolean
+
+- **num_replicas**: number
+
+- **placement**: ?
+
+- **retention**: ?
+
+- **sealed**: boolean
+
+- **sources**: ?
+
+- **storage**: 'file' | 'memory'
+
+- **template_owner**: string
+
+
+
+### JetStreamOptions
+
+- **apiPrefix**: string
+
+- **domain**: string
+
+- **timeout**: number
+
+
+
+### JetStreamPublishOption
+
+- **ackWait**: number
+
+- **expect**: { lastMsgID: string, lastSequence: number, lastSubjectSequence: number, streamName: string }
+
+- **headers**: ?
+
+- **msgID**: string
+
+- **timeout**: number
 
 
