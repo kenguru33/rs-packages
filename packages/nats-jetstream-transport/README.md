@@ -35,7 +35,7 @@ npm i @nestjs-plugins/nestjs-nats-jetstream-transport
 docker run -d --name nats-main -p 4222:4222 -p 6222:6222 -p 8222:8222 nats -js -m 8222
 ```
 
-
+## Configuration objects
 
 ### NatsJetStreamServerOptions
 
@@ -169,7 +169,7 @@ docker run -d --name nats-main -p 4222:4222 -p 6222:6222 -p 8222:8222 nats -js -
 
 ### streamConfig
 
-- **subjects**: string [] - Which NATS subjects to populate this stream with. Supports wildcards. Defaults to just the configured stream `name`.
+[Streams - NATS Docs]https://docs.nats.io/jetstream/concepts/streams)
 
 - **allow_rollup_hdrs**: boolean
 
@@ -219,11 +219,13 @@ docker run -d --name nats-main -p 4222:4222 -p 6222:6222 -p 8222:8222 nats -js -
 
 ### JetStreamOptions
 
-- **apiPrefix**: string
 
-- **domain**: string
 
-- **timeout**: number
+- **apiPrefix**: string - *Not documented!*
+
+- **domain**: string - Sets the domain for JetStream subjects, creating a standard prefix from that domain.
+
+- **timeout**: number - Sets the request timeout for JetStream API calls.
 
 
 
@@ -231,12 +233,18 @@ docker run -d --name nats-main -p 4222:4222 -p 6222:6222 -p 8222:8222 nats -js -
 
 - **ackWait**: number
 
-- **expect**: { lastMsgID: string, lastSequence: number, lastSubjectSequence: number, streamName: string }
+- **expect**: { lastMsgID: string, lastSequence: number, lastSubjectSequence: number, streamName: string } - require that the last message published on the subject was published to the correct stream.
 
 - **headers**: ?
 
-- **msgID**: string
+- **msgID**: string - provide your own unique message ID for every message published.
 
 - **timeout**: number
+
+
+
+## Code example
+
+
 
 
