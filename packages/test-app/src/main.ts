@@ -7,9 +7,7 @@ async function bootstrap() {
   const options: CustomStrategy = {
     strategy: new NatsJetStreamServer({
       id: 'test-service',
-      connectionOptions: {
-        servers: 'localhost:4222',
-      },
+      connectionOptions: {},
       consumerOptions: {
         deliverGroup: 'test-service',
         durable: true,

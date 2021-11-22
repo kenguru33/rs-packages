@@ -42,7 +42,7 @@ export class AppController {
 
   @EventPattern('order.deleted')
   public async orderDeletedHandler(
-    @Payload() data: { id: number; name: string },
+    @Payload() data:any,
     @Ctx() context: NatsJetStreamContext,
   ) {
     context.message.ack();
