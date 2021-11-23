@@ -201,7 +201,7 @@ You are now ready to publish and consume events on the stream. See the [code exa
 
 - **description**: string
 
-- **discard**: DiscardPolicy - When a Stream has reached its configured `max_bytes` or `max_msgs`, this policy kicks in. `DiscardPolicy::New` refuses new messages or `DiscardPolicy::Old` (default) deletes old messages to make space.
+- **discard**: DiscardPolicy (default: Old)- When a Stream has reached its configured `max_bytes` or `max_msgs`, this policy kicks in. `DiscardPolicy New` refuses new messages or `DiscardPolicy Old` deletes old messages to make space.
 
 - **duplicate_window**: number - The window within which to track duplicate messages.
 

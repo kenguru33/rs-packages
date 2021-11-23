@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { NatsJetStreamTransport } from '@nestjs-plugins/nats-jetstream-transport';
+import { DiscardPolicy, NatsJetStreamTransport } from '@nestjs-plugins/nats-jetstream-transport';
+import { StorageType } from '@nestjs-plugins/nats-jetstream-transport/node_modules/nats';
 
 @Module({
   imports: [
@@ -10,8 +11,18 @@ import { NatsJetStreamTransport } from '@nestjs-plugins/nats-jetstream-transport
         servers: 'localhost:4222',
       },
       streamConfig: {
+        name: 'mystream',
         subjects: ['order.*'],
+        discard: DiscardPolicy.New,
+        placement: {cluster: '', tags: ['hhh']},
+        storage: StorageType.File,
       },
+      jetStreamPublishOptions: {
+        
+      },
+      jetStreamOption: {
+      
+      }
     }),
   ],
   controllers: [AppController],

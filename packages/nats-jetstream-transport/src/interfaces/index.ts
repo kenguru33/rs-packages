@@ -5,13 +5,22 @@ import {
   PubAck,
   StreamConfig,
   JetStreamPublishOptions,
+  DiscardPolicy,
+  MsgHdrs,
+  StreamSource,
+  StorageType
 } from "nats";
+
+export type NatsJetStreamConfig = Partial<StreamConfig> & Pick<StreamConfig, "name">;
+
+export {DiscardPolicy, MsgHdrs, StreamSource, StorageType};
+
 
 export interface NatsJetStreamClientOptions {
   connectionOptions: ConnectionOptions;
-  streamConfig: Partial<StreamConfig>;
+  streamConfig: NatsJetStreamConfig;
   jetStreamOption?: JetStreamOptions;
-  jetStreamPublishOptions?: JetStreamPublishOptions;
+  jetStreamPublishOptions?: Partial<JetStreamPublishOptions>;
 }
 
 export interface NatsJetStreamClientAsyncOptions
